@@ -35,26 +35,20 @@ plot_icc<- function(cat, item){
 }
 plot_icc(ltm_cat)
 
-#NEXT GRM_cat. 
-##Question, jacob said that these plots needn't take on
-# only five values. Was he misunderstood abou
+## Generalized IRF plot
 
-plot_grm<-function(cat){
+IRFplot<-function(cat){
   x<-seq(-5,5,.1)
-  one<-sapply(x,probability, catObj=grm_cat, item=1)
-  two<-diff(one)
-  three<-t(two)
-  x<-1:length(three[,1])
+  three<-t(diff(sapply(x,probability, catObj=cat, item=1))) #Probability
   plot(x, three[,1],"l", main="IRF Plot",ylab="Probability", xlab=  expression(theta), lwd=2, ylim=c(0,1), col=rgb(51/255, 153/255, 102/255), tick=F,cex.axis=.90)
-  lines(x, three[,2], col=rgb(0/255, 102/255, 204/255),lwd=2 )
-  lines(x, three[,3],col=rgb(204/255, 102/255, 153/255), lwd=2 )
-  lines(x, three[,4], col= rgb(102/255, 0/255, 102/255),lwd=2 )
-  lines(x, three[,5], col=rgb(204/255, 51/255, 0/255),lwd=2 )
-  legend("left", legend=c("Probability Correct", "Probability Incorrect"), col=c(rgb(51/255, 153/255, 102/255), rgb(204/255, 102/255, 153/255)), lty=c(1,2), cex=0.8)
-  
+  linecolors<-c(rgb(0/255, 102/255, 204/255),rgb(204/255, 102/255, 153/255),
+                col= rgb(102/255, 0/255, 102/255), col=rgb(204/255, 51/255, 0/255),
+                sapply(c(1:(ncol(three))),function(i){return(col=rgb(
+                  sample(1:255,1)/255,sample(1:255,1)/255,sample(1:255,1)/255))}))
+  sapply(1:(ncol(three)-1),function(i){lines(x,three[,i+1],col=linecolors[i],lwd=2)})
+  legend("left", legend=sapply(1:ncol(three),function(i)paste("R",i,sep="")), 
+       col=linecolors[1:ncol(three)], lty=c(1,2), cex=0.8)
 }
-
-
 plot_grm(grm_cat)
 ######
 
@@ -98,23 +92,23 @@ plot(x,ICC)
 ##Now we are gonna do this ish with the IIF
 #Maybe discuss this plot with Erin 
 #it uses the fisher Infor
-<<<<<<< HEAD
+
 lines(smooth.spline(x, Probability[,2]))
 plot_iif<- function(cat, item=1){
-=======
+
 
 plot_iif<- function(cat, item){
->>>>>>> b5034476a88ba81baf4f75748083c2e0bd6ddb7f
+
   x<-seq(-5,5,.01)
   y<-sapply(x,fisherInf, catObj=ltm_cat, item)
   # create a vector of x values a bunch of different theta values
   #plug x value
   #use apply to loop through the vector of 
-<<<<<<< HEAD
+
   plot(x,y, main="Item Information Function")
-=======
+
   plot(x,y, main="Item Information Function","l", col=rgb(204/255, 102/255, 153/255),lwd=2,ylab="Probability", xlab=  expression(theta))
->>>>>>> b5034476a88ba81baf4f75748083c2e0bd6ddb7f
-}
+
+}}
 plot_iif(ltm_cat)
 
