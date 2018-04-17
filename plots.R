@@ -1,4 +1,3 @@
-# hi
 #THIS IS THE PLOT IRF
 library(catSurv)
 #Bare bones IRF function 
@@ -75,16 +74,30 @@ plot_gpcm<-function(cat){
 
 plot_gpcm(gpcm_cat)
 
+
+## ICC Plot for gpcm
+
+ICCplot.gpcm<-function(cat=gpcm_cat,item=1){
+x<-seq(-5,5,.01)
+Probability<-t(sapply(x,probability, catObj=gpcm_cat, item=1))##modify catobj
+expc<-sapply(c(1:nrow(Probability)),function(i){sum(Probability[i]*x)})
+ICC<-sapply(c(1:nrow(Probability)),function(i){sum(expc[1:i])})
+sum(Probability)
+plot(x,expc)
+plot(x,ICC)
+}
+
+
 ##Now we are gonna do this ish with the IIF
 #Maybe discuss this plot with Erin 
 #it uses the fisher Infor
 lines(smooth.spline(x, Probability[,2]))
-plot_iif<- function(cat, item){
+plot_iif<- function(cat, item=1){
   x<-seq(-5,5,.01)
-  y<-sapply(x,fisherInf, catObj=ltm_cat, item=1)
+  y<-sapply(x,fisherInf, catObj=ltm_cat, item)
   # create a vector of x values a bunch of different theta values
   #plug x value
   #use apply to loop through the vector of 
-  plot(x,y, main="Item Characteristic Curve")
+  plot(x,y, main="Item Information Function")
 }
 plot_iif(ltm_cat)
