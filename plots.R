@@ -1,4 +1,3 @@
-
 ## Generalized CAT plot
 ## Arguments for the model: "IRF", "ICC", "IIF" (the default is ICC)
 
@@ -22,7 +21,7 @@ catPlot<-function(catObj,item=1,model="ICC"){
   if((catObj@model=="grm")|(catObj@model=="gpcm")){
     ipr<-t(ipr)[,2:(nrow(ipr)-1)]}
   if(model=="IRF"){x<-x[2:length(x)]
-  ipr<-as.matrix(sapply(1:(nrow(ipr)-1),function(i){return(abs(ipr[i+1,]-ipr[i,]))}))
+  ipr<-10*as.matrix(sapply(1:(nrow(ipr)-1),function(i){return(abs(ipr[i+1,]-ipr[i,]))}))
   if(catObj@model=="grm"|catObj@model=="gpcm"){ipr<-t(ipr)}}
   plot(c(),c(),"l", main=paste(model,"Plot"),ylab="Probability", xlab=expression(theta),
        lwd=2, xlim=c(-5,5), ylim=c(0,max(ipr)), tick=F,cex.axis=.90)
