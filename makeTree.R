@@ -54,9 +54,10 @@ makeTree <- function(catObj, flat = FALSE){
   for(i in 1:length(var_names)){
     resp_options[i] <- (length(catObj@difficulty[[i]]) + 2)
   }
-
+##q: next item for current phase
   q <- selectItem(catObj)$next_item
   output <- list()
+  ## each item in output responds to response options
   for (i in 1:(resp_options[q])){
     output[[paste(i)]] <- NA
   }
@@ -73,12 +74,12 @@ makeTree <- function(catObj, flat = FALSE){
       q_names <- names(output)
       
       if(is.na(output[[i]])){
-        
+        ## If there is only one NA
         if(sum(is.na(catObj@answers)) == 1){
           q <- var_names[q]
           output[[q_names[i]]] <- list(Next = q)
         }
-        
+        ## If there are more than 1 NA's AND the non-NA answers are less than threshold-1 
         if(sum(is.na(catObj@answers)) > 1 & sum(!is.na(catObj@answers)) < (catObj@lengthThreshold - 1)){
           this_q <- which(var_names == output[["Next"]])
           new_cat <- storeAnswer(catObj, this_q, as.integer(names(output)[i]))
@@ -100,13 +101,16 @@ makeTree <- function(catObj, flat = FALSE){
                                      var_names = var_names,
                                      resp_options = resp_options)
         }
-        
+        ## If answers are equal to or more than length threshold-1, peform the last calculation
         if(sum(!is.na(catObj@answers)) >= (catObj@lengthThreshold-1)){
-          this_q <- which(var_names == output[["Next"]])
-          new_cat <- storeAnswer(catObj, this_q, as.integer(names(output)[i]))
-          q <- selectItem(new_cat)$next_item
-          q <- var_names[q]
-          output[[q_names[i]]] <- list(Next = q)
+          this_q <- which(var_names == output[["Next"]]) ##same as above
+          new_cat <- storeAnswer(catObj, this_q, as.integer(names(output)[i]))##same as above
+          q <- selectItem(new_cat)$next_item##same as above
+          q <- var_names[q]##partly same
+          output[[q_names[i]]] <- list(Next = q)##partly same
+          ## This function cannot use checkStopRules because 
+          ## To be done: when checkStopRules==T, undo what is done unnecessarily
+          ## Simplify if's depending on lengthThreshold-1 into one.
         }
       }
     }
@@ -164,3 +168,13 @@ makeTree <- function(catObj, flat = FALSE){
   return(out)
 }
 
+## examples
+##ltmCat(npi[1:1000,1:5])
+# npiobj@lengthThreshold<-3
+# makeTree(npiobj)
+
+
+
+##Cat-Class has threshold
+##length Override
+##checkStopRules(ex_cat) ## it has everything about threshold.
