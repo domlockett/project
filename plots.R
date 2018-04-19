@@ -20,13 +20,15 @@ catPlot<-function(catObj,item=1,model="ICC"){
   else{ipr<-as.matrix(sapply(x,probability, catObj=catObj, item))
   if((catObj@model=="grm")|(catObj@model=="gpcm")){
     ipr<-t(ipr)[,2:(nrow(ipr)-1)]}
+  if(model=="ICC"){ipr<-as.matrix(sapply(1:nrow(ipr),function(i)weighted.mean(ipr[i,],1:ncol(ipr))))}
   if(model=="IRF"){x<-x[2:length(x)]
   ipr<-10*as.matrix(sapply(1:(nrow(ipr)-1),function(i){return(abs(ipr[i+1,]-ipr[i,]))}))
   if(catObj@model=="grm"|catObj@model=="gpcm"){ipr<-t(ipr)}}
   plot(c(),c(),"l", main=paste(model,"Plot"),ylab="Probability", xlab=expression(theta),
        lwd=2, xlim=c(-5,5), ylim=c(0,max(ipr)), tick=F,cex.axis=.90)
   sapply(1:(ncol(ipr)),function(i){lines(x,ipr[,i],col=linecolors[i],lwd=2)})
-  legend("left", legend=sapply(1:ncol(ipr),function(i)paste("R",i,sep="")), 
+  if(model=="ICC"){legend("topright", legend=paste("Item",item),col=linecolors[1], lty=1, cex=0.8)}}
+  if(model=="IRF"){legend("left", legend=sapply(1:ncol(ipr),function(i)paste("R",i,sep="")), 
          col=linecolors[1:ncol(ipr)], lty=1, cex=0.8)}}
 
 ## Examples
@@ -39,6 +41,7 @@ catPlot(grm_cat,item=8,model="IIF")
 
 
 # Old codes
+
 
 # data(grm_cat)
 # data(ltm_cat)
