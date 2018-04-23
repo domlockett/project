@@ -13,10 +13,13 @@ catPlot<-function(catObj,item=1,model="ICC"){
   
   x<-seq(-5,5,.1)
   if(model=="IIF"){ipr<-sapply(x,fisherInf, catObj=catObj, item=item)
+  layout(matrix(c(1,2), ncol=2), widths= lcm(14))
+  layout.show(2)
   plot(x,ipr,"l", main="Item Information Function",col=linecolors[1],
        ylab=expression(I(theta)),xlab=expression(theta), lwd=2,
        xlim=c(-5,5), ylim=c(0,max(ipr)), tick=F,cex.axis=.90)
-  legend("topright", legend=paste("Item",item),col=linecolors[1], lty=1, cex=0.8)}
+  plot (1, 1, type="n", axes=F, xlab="", ylab="")
+    legend("topright", legend=paste("Item",item),col=linecolors[1], lty=1, cex=0.8)}
   else{ipr<-as.matrix(sapply(x,probability, catObj=catObj, item))
   if((catObj@model=="grm")|(catObj@model=="gpcm")){
     ipr<-t(ipr)[,2:(nrow(ipr)-1)]}
@@ -24,9 +27,12 @@ catPlot<-function(catObj,item=1,model="ICC"){
   if(model=="IRF"){x<-x[2:length(x)]
   ipr<-10*as.matrix(sapply(1:(nrow(ipr)-1),function(i){return(abs(ipr[i+1,]-ipr[i,]))}))
   if(catObj@model=="grm"|catObj@model=="gpcm"){ipr<-t(ipr)}}
+  layout(matrix(c(1,2), ncol=2), widths= lcm(14))
+  layout.show(2)
   plot(c(),c(),"l", main=paste(model,"Plot"),ylab="Probability", xlab=expression(theta),
        lwd=2, xlim=c(-5,5), ylim=c(0,max(ipr)), tick=F,cex.axis=.90)
   sapply(1:(ncol(ipr)),function(i){lines(x,ipr[,i],col=linecolors[i],lwd=2)})
+  plot (1, 1, type="n", axes=F, xlab="", ylab="")
   if(model=="ICC"){legend("topright", legend=paste("Item",item),col=linecolors[1], lty=1, cex=0.8)}}
   if(model=="IRF"){legend("left", legend=sapply(1:ncol(ipr),function(i)paste("R",i,sep="")), 
          col=linecolors[1:ncol(ipr)], lty=1, cex=0.8)}}
