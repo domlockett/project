@@ -80,14 +80,17 @@ makeTree <- function(catObj, flat = FALSE){
           output[[q_names[i]]] <- list(Next = q)
         }
         ## If there are more than 1 NA's AND the non-NA answers are less than threshold-1 
-        if(sum(is.na(catObj@answers)) > 1 & sum(!is.na(catObj@answers)) < (catObj@lengthThreshold - 1)){
           this_q <- which(var_names == output[["Next"]])##Next question becomes 'this' question
           new_cat <- storeAnswer(catObj, this_q, as.integer(names(output)[i]))##Answer
           q <- selectItem(new_cat)$next_item
+          if(checkStopRules(catObj)==FALSE){
           for(j in 1:(resp_options[q] + 1)){
             output[[q_names[i]]][[j]] <- NA
           }
           output[[q_names[i]]][[j]] <- var_names[q]
+          }
+          else{q <- var_names[q]}
+          if(checkStopRules(catObj)==FALSE){
           if(catObj@model == "ltm" | catObj@model == "tpm"){
             names(output[[q_names[i]]]) <- c(-1:(resp_options[q]-2), "Next")
           }else{
@@ -99,18 +102,9 @@ makeTree <- function(catObj, flat = FALSE){
           output[[q_names[i]]] <- treeList(output = output[[q_names[i]]],
                                      catObj = new_cat,
                                      var_names = var_names,
-                                     resp_options = resp_options)
-        }
-        ## If answers are equal to or more than length threshold-1, peform the last calculation
-        if(sum(!is.na(catObj@answers)) >= (catObj@lengthThreshold-1)){
-          this_q <- which(var_names == output[["Next"]]) ##same as above
-          new_cat <- storeAnswer(catObj, this_q, as.integer(names(output)[i]))##same as above
-          q <- selectItem(new_cat)$next_item##same as above
-          q <- var_names[q]##partly same
-          output[[q_names[i]]] <- list(Next = q)##partly same
-          ## This function cannot use checkStopRules because 
-          ## To be done: when checkStopRules==T, undo what is done unnecessarily
-          ## Simplify if's depending on lengthThreshold-1 into one.
+                                     resp_options = resp_options)}
+          else{output[[q_names[i]]] <- list(Next = q)}
+        
         }
       }
     }
@@ -169,7 +163,7 @@ makeTree <- function(catObj, flat = FALSE){
 }
 
 ## examples
-##ltmCat(npi[1:1000,1:5])
+##npiobj<-ltmCat(npi[1:1000,1:5])
 # npiobj@lengthThreshold<-3
 # makeTree(npiobj)
 

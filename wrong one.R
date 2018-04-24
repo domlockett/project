@@ -80,7 +80,7 @@ makeTree <- function(catObj, flat = FALSE){
           output[[q_names[i]]] <- list(Next = q)
         }
         ## If there are more than 1 NA's AND the non-NA answers are less than threshold-1 
-        if(sum(is.na(catObj@answers)) > 1 & sum(!is.na(catObj@answers)) < (catObj@lengthThreshold - 1)){
+        if(sum(is.na(catObj@answers)) > 1 ){
           this_q <- which(var_names == output[["Next"]])##Next question becomes 'this' question
           new_cat <- storeAnswer(catObj, this_q, as.integer(names(output)[i]))##Answer
           q <- selectItem(new_cat)$next_item
@@ -94,6 +94,7 @@ makeTree <- function(catObj, flat = FALSE){
             names(output[[q_names[i]]]) <- c(-1, 1:(resp_options[q]-1), "Next")
           }
           output[[q_names[i]]] <- as.list(output[[q_names[i]]])
+          if(checkStopRules(catObj)==TRUE){break}
 
           ## calling it recursively
           output[[q_names[i]]] <- treeList(output = output[[q_names[i]]],
@@ -101,17 +102,17 @@ makeTree <- function(catObj, flat = FALSE){
                                      var_names = var_names,
                                      resp_options = resp_options)
         }
-        ## If answers are equal to or more than length threshold-1, peform the last calculation
-        if(sum(!is.na(catObj@answers)) >= (catObj@lengthThreshold-1)){
-          this_q <- which(var_names == output[["Next"]]) ##same as above
-          new_cat <- storeAnswer(catObj, this_q, as.integer(names(output)[i]))##same as above
-          q <- selectItem(new_cat)$next_item##same as above
-          q <- var_names[q]##partly same
-          output[[q_names[i]]] <- list(Next = q)##partly same
+        # ## If answers are equal to or more than length threshold-1, peform the last calculation
+        # if(sum(!is.na(catObj@answers)) >= (catObj@lengthThreshold-1)){
+        #   this_q <- which(var_names == output[["Next"]]) ##same as above
+        #   new_cat <- storeAnswer(catObj, this_q, as.integer(names(output)[i]))##same as above
+        #   q <- selectItem(new_cat)$next_item##same as above
+        #   q <- var_names[q]##partly same
+        #   output[[q_names[i]]] <- list(Next = q)##partly same
           ## This function cannot use checkStopRules because 
           ## To be done: when checkStopRules==T, undo what is done unnecessarily
           ## Simplify if's depending on lengthThreshold-1 into one.
-        }
+        # }
       }
     }
     return(output)
@@ -178,3 +179,202 @@ makeTree <- function(catObj, flat = FALSE){
 ##Cat-Class has threshold
 ##length Override
 ##checkStopRules(ex_cat) ## it has everything about threshold.
+
+## Result
+# $`-1`
+# $`-1`$`-1`
+# $`-1`$`-1`$`-1`
+# $`-1`$`-1`$`-1`$Next
+# [1] "Q1"
+# 
+# 
+# $`-1`$`-1`$`0`
+# $`-1`$`-1`$`0`$Next
+# [1] "Q5"
+# 
+# 
+# $`-1`$`-1`$`1`
+# $`-1`$`-1`$`1`$Next
+# [1] "Q1"
+# 
+# 
+# $`-1`$`-1`$Next
+# [1] "Q3"
+# 
+# 
+# $`-1`$`0`
+# $`-1`$`0`$`-1`
+# $`-1`$`0`$`-1`$Next
+# [1] "Q5"
+# 
+# 
+# $`-1`$`0`$`0`
+# $`-1`$`0`$`0`$Next
+# [1] "Q3"
+# 
+# 
+# $`-1`$`0`$`1`
+# $`-1`$`0`$`1`$Next
+# [1] "Q5"
+# 
+# 
+# $`-1`$`0`$Next
+# [1] "Q1"
+# 
+# 
+# $`-1`$`1`
+# $`-1`$`1`$`-1`
+# $`-1`$`1`$`-1`$Next
+# [1] "Q5"
+# 
+# 
+# $`-1`$`1`$`0`
+# $`-1`$`1`$`0`$Next
+# [1] "Q5"
+# 
+# 
+# $`-1`$`1`$`1`
+# $`-1`$`1`$`1`$Next
+# [1] "Q5"
+# 
+# 
+# $`-1`$`1`$Next
+# [1] "Q3"
+# 
+# 
+# $`-1`$Next
+# [1] "Q4"
+# 
+# 
+# $`0`
+# $`0`$`-1`
+# $`0`$`-1`$`-1`
+# $`0`$`-1`$`-1`$Next
+# [1] "Q5"
+# 
+# 
+# $`0`$`-1`$`0`
+# $`0`$`-1`$`0`$Next
+# [1] "Q5"
+# 
+# 
+# $`0`$`-1`$`1`
+# $`0`$`-1`$`1`$Next
+# [1] "Q5"
+# 
+# 
+# $`0`$`-1`$Next
+# [1] "Q3"
+# 
+# 
+# $`0`$`0`
+# $`0`$`0`$`-1`
+# $`0`$`0`$`-1`$Next
+# [1] "Q5"
+# 
+# 
+# $`0`$`0`$`0`
+# $`0`$`0`$`0`$Next
+# [1] "Q5"
+# 
+# 
+# $`0`$`0`$`1`
+# $`0`$`0`$`1`$Next
+# [1] "Q1"
+# 
+# 
+# $`0`$`0`$Next
+# [1] "Q3"
+# 
+# 
+# $`0`$`1`
+# $`0`$`1`$`-1`
+# $`0`$`1`$`-1`$Next
+# [1] "Q5"
+# 
+# 
+# $`0`$`1`$`0`
+# $`0`$`1`$`0`$Next
+# [1] "Q5"
+# 
+# 
+# $`0`$`1`$`1`
+# $`0`$`1`$`1`$Next
+# [1] "Q5"
+# 
+# 
+# $`0`$`1`$Next
+# [1] "Q3"
+# 
+# 
+# $`0`$Next
+# [1] "Q4"
+# 
+# 
+# $`1`
+# $`1`$`-1`
+# $`1`$`-1`$`-1`
+# $`1`$`-1`$`-1`$Next
+# [1] "Q5"
+# 
+# 
+# $`1`$`-1`$`0`
+# $`1`$`-1`$`0`$Next
+# [1] "Q5"
+# 
+# 
+# $`1`$`-1`$`1`
+# $`1`$`-1`$`1`$Next
+# [1] "Q3"
+# 
+# 
+# $`1`$`-1`$Next
+# [1] "Q4"
+# 
+# 
+# $`1`$`0`
+# $`1`$`0`$`-1`
+# $`1`$`0`$`-1`$Next
+# [1] "Q5"
+# 
+# 
+# $`1`$`0`$`0`
+# $`1`$`0`$`0`$Next
+# [1] "Q5"
+# 
+# 
+# $`1`$`0`$`1`
+# $`1`$`0`$`1`$Next
+# [1] "Q3"
+# 
+# 
+# $`1`$`0`$Next
+# [1] "Q4"
+# 
+# 
+# $`1`$`1`
+# $`1`$`1`$`-1`
+# $`1`$`1`$`-1`$Next
+# [1] "Q4"
+# 
+# 
+# $`1`$`1`$`0`
+# $`1`$`1`$`0`$Next
+# [1] "Q4"
+# 
+# 
+# $`1`$`1`$`1`
+# $`1`$`1`$`1`$Next
+# [1] "Q4"
+# 
+# 
+# $`1`$`1`$Next
+# [1] "Q5"
+# 
+# 
+# $`1`$Next
+# [1] "Q1"
+# 
+# 
+# $Next
+# [1] "Q2"

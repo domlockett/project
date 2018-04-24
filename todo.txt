@@ -1,0 +1,5 @@
+catObj<-X= set of answers
+Each person takes cat 
+not the questions asked but final theta.
+
+Another function: multiple cat object (unknown number of cat object)
