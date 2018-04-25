@@ -10,16 +10,14 @@ catPlot<-function(catObj,item=1,model="ICC"){
   ## Above is the customizable part. Codes below return randomized colors.
                   sapply(c(1:1000),function(i){return(col=rgb(
                   sample(100:255,1)/255,sample(100:255,1)/255,sample(100:255,1)/255))}))
-  
+  ltys<-c(1:16)
   x<-seq(-5,5,.1)
   if(model=="IIF"){ipr<-sapply(x,fisherInf, catObj=catObj, item=item)
-  layout(matrix(c(1,2), ncol=2), widths= lcm(14))
-  layout.show(2)
-  plot(x,ipr,"l", main="Item Information Function",col=linecolors[1],
+  par(mar=c(3,3,2,9),mgp=c(1.5,0,0))
+  plot(x,ipr,"l", main="Item Information Function",col=linecolors[3],
        ylab=expression(I(theta)),xlab=expression(theta), lwd=2,
-       xlim=c(-5,5), ylim=c(0,max(ipr)), tick=F,cex.axis=.90)
-  plot (1, 1, type="n", axes=F, xlab="", ylab="")
-    legend("topright", legend=paste("Item",item),col=linecolors[1], lty=1, cex=0.8)}
+       xlim=c(-5,5), ylim=c(0,max(ipr)), tck=F,cex.axis=.90, las=1)
+  legend("left",  inset=c(1,1.2), xpd=TRUE, bty="n", legend=paste("Item",item),col=linecolors[3], lty=1, cex=0.8)}
   else{ipr<-as.matrix(sapply(x,probability, catObj=catObj, item))
   if((catObj@model=="grm")|(catObj@model=="gpcm")){
     ipr<-t(ipr)[,2:(nrow(ipr)-1)]}
@@ -27,15 +25,13 @@ catPlot<-function(catObj,item=1,model="ICC"){
   if(model=="IRF"){x<-x[2:length(x)]
   ipr<-10*as.matrix(sapply(1:(nrow(ipr)-1),function(i){return(abs(ipr[i+1,]-ipr[i,]))}))
   if(catObj@model=="grm"|catObj@model=="gpcm"){ipr<-t(ipr)}}
-  layout(matrix(c(1,2), ncol=2), widths= lcm(14))
-  layout.show(2)
+  par(mar=c(3,3,2,9),mgp=c(1.5,0,0))
   plot(c(),c(),"l", main=paste(model,"Plot"),ylab="Probability", xlab=expression(theta),
-       lwd=2, xlim=c(-5,5), ylim=c(0,max(ipr)), tick=F,cex.axis=.90)
-  sapply(1:(ncol(ipr)),function(i){lines(x,ipr[,i],col=linecolors[i],lwd=2)})
-  plot (1, 1, type="n", axes=F, xlab="", ylab="")
-  if(model=="ICC"){legend("topright", legend=paste("Item",item),col=linecolors[1], lty=1, cex=0.8)}}
-  if(model=="IRF"){legend("left", legend=sapply(1:ncol(ipr),function(i)paste("R",i,sep="")), 
-         col=linecolors[1:ncol(ipr)], lty=1, cex=0.8)}}
+       lwd=2, xlim=c(-5,5), ylim=c(0,max(ipr)), las=1, tck=F,cex.axis=.90)
+  sapply(1:(ncol(ipr)),function(i){lines(x,ipr[,i],col=linecolors[i],lty=ltys[i], lwd=2)})
+  if(model=="ICC"){legend("left",  inset=c(1,1.2), xpd=TRUE, bty="n", legend=paste("Item",item), col=linecolors[1], lty=1 , cex=0.8)}}
+  if(model=="IRF"){legend("left",  inset=c(1,1.2), xpd=TRUE, bty="n",legend=sapply(1:ncol(ipr),function(i)paste("Response", i,sep=" ")), 
+         col=linecolors[1:ncol(ipr)], lty=ltys[1:ncol(ipr)] , cex=0.8)}}
 
 ## Examples
 catPlot(ltm_cat,item=8,model="ICC")
@@ -44,8 +40,14 @@ catPlot(ltm_cat,item=8,model="IIF")
 catPlot(grm_cat,item=8,model="ICC")
 catPlot(grm_cat,item=8,model="IRF")
 catPlot(grm_cat,item=8,model="IIF")
+length(linecolors)
+x<-seq(-5,5,.01)
+y<-sapply(x,probability, catObj=ltm_cat, item=1)
+par(mar=c(3,3,2,9),mgp=c(2,0,0))
+plot(x,y,main="Item Response Function", bty='L', xlab="butt", "l",col =rgb(51/255, 153/255, 102/255), axis=F,cex.axis=.90)
+legend("left", inset=c(1,1.2), xpd=TRUE, bty="n", legend=c("Probability Correct", "Probability Incorrect"), col=c(rgb(51/255, 153/255, 102/255), rgb(204/255, 102/255, 153/255)), lty=c(1,2), cex=0.8)
 
-
+library(catSurv)
 # Old codes
 
 
