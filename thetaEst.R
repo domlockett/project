@@ -14,15 +14,22 @@ theta_basic<- function(catObj, answers=c()){
   cat<-storeAnswer(cat, item=selectItem(cat)$next_item, answers[selectItem(cat)$next_item])
   # now call on the catObj with 1 question/answer
   }
-  theta_est<-(estimateTheta(cat))#, getAnswers(cat) ))))
+  theta_est<-(estimateTheta(cat)) 
+  #theta_est<-list(estimateTheta(cat), getAnswers(cat) )
   #we can verify the estimates by adding answers to our output we would then plug those answers into ltm_cat and check with estimateTheta
   return(theta_est)
 }
+
+#test data
 answers<-sample(c(1:4),40,replace=T)
 
+#test function
+theta_basic(ltm_cat, answers)
 
-t<-theta_basic(ltm_cat, answers)
-#test<-t[,2]
+#Tests to ensure accuracy
+
+#answ<-theta_basic(ltm_cat, answers)
+#test<-(answ[[2]])
 #ltm_cat@answers<-test
 #estimateTheta(ltm_cat)
 
@@ -60,6 +67,6 @@ theta_est(respondents)
 
 
 #NOT WORKING EXAMPLE
-
+??tmp_cat
 theta_basic(tpm_cat,answers)
 t<-(apply(respondents, theta_basic, catObj=tpm_cat))
