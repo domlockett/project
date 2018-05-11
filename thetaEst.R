@@ -22,9 +22,12 @@ theta_basic<- function(catObj, answers=c()){
 
 #test data
 answers<-sample(c(1:4),40,replace=T)
-
+tpm_answers<-sample(c(0:1),20,replace=T)
 #test function
 theta_basic(ltm_cat, answers)
+theta_basic(grm_cat, answers)
+theta_basic(gpcm_cat, answers)
+theta_basic(tpm_cat, tpm_answers)
 
 #Tests to ensure accuracy
 
@@ -42,28 +45,50 @@ r4<-c(1 ,1 ,3 ,3 ,1 ,3 ,1 ,1 ,3 ,1 ,1 ,4 ,4 ,4 ,4, 4, 3, 4, 2 ,4 ,4 ,2 ,3 ,4 ,2 
 r5<-c(1 ,2 ,3 ,3 ,4 ,1 ,4 ,3, 2 ,1 ,2 ,1 ,4 ,2 ,3 ,2 ,2 ,2 ,4 ,1 ,4 ,2 ,2 ,2 ,4 ,1 ,1 ,1 ,2, 4 ,2 ,4 ,1 ,4 ,4 ,2 ,3 ,3 ,1 ,2)
 respondents<-rbind(r1,r2,r3,r4,r5)
 
+r1<-sample(0:1,20, replace=T)
+r2<-sample(0:1,20, replace=T)
+r3<-sample(0:1,20, replace=T)
+r4<-sample(0:1,20, replace=T)
+r5<-sample(0:1,20, replace=T)
+respondents_tpm<-rbind(r1,r2,r3,r4,r5)
 
-theta_est<-function(respondents){
+theta_est<-function(respondents, respondents_tpm){
+  if(missing(respondents_tpm)){
 #each catObj gets a different apply to perform the theta_basic function on multiple respondents
 grm<-(apply(respondents,1,  theta_basic, catObj=grm_cat))
-#turn it into a dataframe
-grm<-(as.data.frame(grm))
-#identify the class
-colnames(grm)<-"GRM"
+  #turn it into a dataframe
+    grm<-(as.data.frame(grm))
+      #identify the class
+        colnames(grm)<-"GRM"
 ltm<-(apply(respondents, 1, theta_basic, catObj=ltm_cat))
-ltm<-(as.data.frame(ltm))
-colnames(ltm)<-"LTM"
+  ltm<-(as.data.frame(ltm))
+    colnames(ltm)<-"LTM"
 gpcm<-apply(respondents,1, theta_basic, catObj=gpcm_cat)
-gpcm<-(as.data.frame(gpcm))
-colnames(gpcm)<-"GPCM"
-#tpm<-(apply(respondents, 1, theta_basic, catObj=tpm_cat))
-#tpm<-(as.data.frame(tpm))
-#colnames(tpm)<-"TPM"
-m<-cbind(grm, ltm, gpcm)#,tpm)
-return(m)
+  gpcm<-(as.data.frame(gpcm))
+    colnames(gpcm)<-"GPCM"
+    well<-cbind(grm,ltm,gpcm)
+     return(well)
+   } else {
+     grm<-(apply(respondents,1,  theta_basic, catObj=grm_cat))
+      grm<-(as.data.frame(grm))
+       colnames(grm)<-"GRM"
+     ltm<-(apply(respondents, 1, theta_basic, catObj=ltm_cat))
+       ltm<-(as.data.frame(ltm))
+         colnames(ltm)<-"LTM"
+     gpcm<-apply(respondents,1, theta_basic, catObj=gpcm_cat)
+      gpcm<-(as.data.frame(gpcm))
+        colnames(gpcm)<-"GPCM"
+     tpm<-apply(respondents_tpm,1, theta_basic, catObj=tpm_cat)
+       tpm<-(as.data.frame(tpm))
+        colnames(tpm)<-"TPM" 
+        return(cbind(grm,ltm,gpcm, tpm))
 }
-theta_est(respondents)
+  }
 
+theta_est(respondents)
+theta_est(respondents, respondents_tpm)
+
+tpm_cat
 
 
 #NOT WORKING EXAMPLE
