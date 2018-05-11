@@ -43,17 +43,14 @@ r2<-c(3, 1, 3, 3, 4, 1, 4 ,2, 4 ,1 ,3 ,3 ,2 ,2 ,3 ,1 ,2 ,1 ,3 ,2 ,3 ,4 ,1 ,1 ,4 
 r3<-c(4 ,2 ,2 ,1 ,2 ,4 ,3 ,4 ,4 ,1 ,3 ,1 ,2 ,2 ,4 ,2 ,1 ,1 ,1 ,2 ,4 ,4 ,2 ,1 ,4 ,3 ,3 ,2 ,2 ,2 ,2 ,2 ,3 ,2 ,1 ,4 ,2 ,3 ,3, 3)
 r4<-c(1 ,1 ,3 ,3 ,1 ,3 ,1 ,1 ,3 ,1 ,1 ,4 ,4 ,4 ,4, 4, 3, 4, 2 ,4 ,4 ,2 ,3 ,4 ,2 ,4 ,2 ,4 ,1 ,1, 2, 3, 4, 4, 2, 1, 1, 2, 4, 4)
 r5<-c(1 ,2 ,3 ,3 ,4 ,1 ,4 ,3, 2 ,1 ,2 ,1 ,4 ,2 ,3 ,2 ,2 ,2 ,4 ,1 ,4 ,2 ,2 ,2 ,4 ,1 ,1 ,1 ,2, 4 ,2 ,4 ,1 ,4 ,4 ,2 ,3 ,3 ,1 ,2)
-respondents<-rbind(r1,r2,r3,r4,r5)
 
-r1<-sample(0:1,20, replace=T)
-r2<-sample(0:1,20, replace=T)
-r3<-sample(0:1,20, replace=T)
-r4<-sample(0:1,20, replace=T)
-r5<-sample(0:1,20, replace=T)
-respondents_tpm<-rbind(r1,r2,r3,r4,r5)
+#make some fake data
+respondents<-rbind(r1,r2,r3,r4,r5)
+respondents_tpm<-rbind(sample(0:1,20, replace=T),sample(0:1,20, replace=T),sample(0:1,20, replace=T),sample(0:1,20, replace=T),sample(0:1,20, replace=T))
+rownames(respondents_tpm)<-c("r1","r2","r3","r4","r5")
 
 theta_est<-function(respondents, respondents_tpm){
-  if(missing(respondents_tpm)){
+    if(missing(respondents_tpm)){
 #each catObj gets a different apply to perform the theta_basic function on multiple respondents
 grm<-(apply(respondents,1,  theta_basic, catObj=grm_cat))
   #turn it into a dataframe
@@ -66,9 +63,9 @@ ltm<-(apply(respondents, 1, theta_basic, catObj=ltm_cat))
 gpcm<-apply(respondents,1, theta_basic, catObj=gpcm_cat)
   gpcm<-(as.data.frame(gpcm))
     colnames(gpcm)<-"GPCM"
-    well<-cbind(grm,ltm,gpcm)
-     return(well)
+     return(cbind(grm,ltm,gpcm))
    } else {
+    
      grm<-(apply(respondents,1,  theta_basic, catObj=grm_cat))
       grm<-(as.data.frame(grm))
        colnames(grm)<-"GRM"
@@ -82,9 +79,9 @@ gpcm<-apply(respondents,1, theta_basic, catObj=gpcm_cat)
        tpm<-(as.data.frame(tpm))
         colnames(tpm)<-"TPM" 
         return(cbind(grm,ltm,gpcm, tpm))
+  
+        }
 }
-  }
-
 theta_est(respondents)
 theta_est(respondents, respondents_tpm)
 
