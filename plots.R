@@ -1,7 +1,34 @@
-## Generalized CAT plot
-## Arguments for the model: "IRF", "ICC", "IIF" (the default is ICC)
-
-library(catSurv)
+#' A function that plots catObjects given specific parameters
+#'
+#' Takes in a \code{cat} object 
+#'
+#' @param catObj An object of class \code{cat}
+#' @param item Any number of \code{Cat} objects of the same class (using different estimation parameters)
+#' @param model
+#'
+#' @details The first function is catPlot which takes in a catObject, an item number, and a plot type and returns a plot of the output.
+#' 
+#' @return The function \code{plotCat} returns a plot.  
+#' 
+#' 
+#' 
+#' 
+#' @seealso \code{\link{Cat-class}}, \code{\link{probability}}, \code{\link{fisherInfo}}, \code{\link{basic_theta}}
+#' 
+#' @examples 
+#'   
+#'catPlot(ltm_cat,item=8,model="ICC")
+#'catPlot(ltm_cat,item=8,model="IRF")
+#'catPlot(ltm_cat,item=8,model="IIF")
+#'catPlot(grm_cat,item=8,model="ICC")
+#'catPlot(grm_cat,item=8,model="IRF")
+#'catPlot(grm_cat,item=8,model="IIF")
+#' 
+#' @author Haley Acevedo, Ryden Butler, Josh W. Cutler, Matt Malis, Jacob M. Montgomery, Tom Wilkinson, Erin Rossiter, Min Hee Seo, Alex Weil, Jaerin Kim, Dominique Lockett 
+#' 
+#' @rdname catPlot
+#' 
+#' @export
 catPlot<-function(catObj,item=1,model="ICC"){
   
 linecolors<-c(col=rgb(51/255, 153/255, 102/255), rgb(0/255, 102/255, 204/255),
@@ -31,11 +58,3 @@ linecolors<-c(col=rgb(51/255, 153/255, 102/255), rgb(0/255, 102/255, 204/255),
   sapply(1:(ncol(ipr)),function(i){lines(x,ipr[,i],col=linecolors[i],lty=ltys[i], lwd=2)})
   if(model=="ICC"){legend("left",  inset=c(1,1.2), xpd=TRUE, bty="n", legend=paste("Item",item), col=linecolors[1], lty=1 , cex=0.8)}}
   if(model=="IRF"){legend("left",  inset=c(1,1.2), xpd=TRUE, bty="n",legend=sapply(1:ncol(ipr),function(i)paste("Response", i,sep=" ")), col=linecolors[1:ncol(ipr)], lty=ltys[1:ncol(ipr)] , cex=0.8)}} 
-
-## Examples
-catPlot(ltm_cat,item=8,model="ICC")
-catPlot(ltm_cat,item=8,model="IRF")
-catPlot(ltm_cat,item=8,model="IIF")
-catPlot(grm_cat,item=8,model="ICC")
-catPlot(grm_cat,item=8,model="IRF")
-catPlot(grm_cat,item=8,model="IIF")
