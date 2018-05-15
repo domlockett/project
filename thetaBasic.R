@@ -37,6 +37,9 @@
 #' @rdname thetaBasic
 #' 
 #' @export
+thetaBasic <- function(catObj){
+UseMethod("thetaBasic", catObj)
+}
 thetaBasic<- function(catObj, answers=c()){
   cat<-storeAnswer(catObj,item=selectItem(catObj)$next_item, answers[selectItem(catObj)$next_item])
   #^call on an catObj with no answers to know which question is first; store it 

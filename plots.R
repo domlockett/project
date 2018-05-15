@@ -29,6 +29,10 @@
 #' @rdname catPlot
 #' 
 #' @export
+catPlot <- function(catObj){
+UseMethod("catPlot", catObj)
+}
+
 catPlot<-function(catObj,item=1,model="ICC"){
   
 linecolors<-c(col=rgb(51/255, 153/255, 102/255), rgb(0/255, 102/255, 204/255),

@@ -43,6 +43,10 @@
 #' @rdname allEst
 #' 
 #' @export
+allEst <- function(catObj){
+UseMethod("allEst", catObj)
+}
+
 allEst<-function(respondents, catObjs=list()){
   #the multiple cat objects must be of the same class and be in list form
   store<-NULL
