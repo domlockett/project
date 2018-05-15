@@ -48,7 +48,7 @@ makeTree <- function(catObj){
   UseMethod("makeTree", catObj)
 }
 
-## New version works for non-binary responses. Notice that the flat option still doesn't work for them.
+## New version works for grm, gpcm, ltm, and tpm.
 ## Comments made to help revision in the future.
 ## You can delete comments whenever you want to publish the function.
 ## I will be keeping the original function and comments, so you can request one whenever you want.
@@ -62,7 +62,7 @@ makeTree <- function(catObj, flat = FALSE){
   ## rlist is a matrix of possible responses for every question
   if(catObj@model=="ltm"|catObj@model=="tpm"){
     rlist<-sapply(1:length(qlist),function(x){c(-1:(nresp[x]-2), "Next")})}
-  else{rlist<-sapply(1:length(qlist),function(x){c(-1, 1:(nresp[x]-1), "Next")})}
+  else{rlist<-sapply(1:length(qlist),function(x){c(-1, 1:(nresp[x]-1), "Next", rep(NA,max(nresp)-(nresp)[x]))})}
   ## Variables defined above are always fixed and not to be modified below
 
   recursiveTree<-function(catObj, output, currentq){  ## To be recursively called
@@ -72,7 +72,7 @@ makeTree <- function(catObj, flat = FALSE){
       for (i in 1:nresp[[currentq]]){ ## Loop: for each possible response
       nextcat<-storeAnswer(catObj,currentq,as.numeric(rlist[i,currentq])) ## Predict next call
       ## i.e. if your answer to current question is 'i', how would your catObj look in next call?
-      if(checkStopRules(nextcat)|sum(is.na(nextcat@answers))==1|ltm_cat@lengthThreshold==sum(!is.na(nextcat@answers))){
+      if(checkStopRules(nextcat)|sum(is.na(nextcat@answers))==1|catObj@lengthThreshold==sum(!is.na(nextcat@answers))){
       ## Add any condition you would like to break the recursive call.
       ## 'sum(is.na(nextcat@answers))==1' was added to end recursive call when
       ## there will be no more question to be answered in the next call.
@@ -131,7 +131,7 @@ makeTree <- function(catObj, flat = FALSE){
       
       response_list <- strsplit(names(flatTree), "[.]")
       output <- matrix(data = NA, nrow = length(flatTree), ncol = length(catObj@answers) + 1)
-      colnames(output) <- c(names(catObj@difficulty), "NextItem")
+      colnames(output) <- c(qlist, "NextItem")
       
       for(i in 1:length(flatTree)){
         output[i,ncol(output)] <- flatTree[i]
@@ -153,22 +153,35 @@ makeTree <- function(catObj, flat = FALSE){
   return(out)
 }
 
-## Examples (uncomment to run)
+## Examples (uncomment to run, after updating the function)
 library(catSurv)
 ltm_cat@lengthThreshold<-3
-catSurv::makeTree(ltm_cat)
-makeTree(ltm_cat) ## Notice that the process takes much longer. No matter which lengthThreshold.
+catSurv::makeTree(ltm_cat,flat=T)
+makeTree(ltm_cat,flat=T)
+## Update: code temporarily revised to reduce computation load, i.e. regardless of response,
+## the total length of tree is limited to catObj@lengthThreshold in the current code.
+## To undo this arbitrary limit, refer to the comments below and fix line 75
+## Current code doesn't work if you don't set lengthThreshold.
+##
+## Notice that the process takes much longer. No matter which lengthThreshold.
 ## This is because '-1' responses do not count toward length threshold in Cat.cpp.
 ## If you edit the code to force the number of responses,
 ## the result from the new function is exactly same as in the original function.
 ## If you want to do this, add such condition as OR statement in the 'if' condition above.
-## For example, add 'ltm_cat@lengthThreshold==sum(!is.na(nextcat@answers))' to the condition.
-ltm_cat@lengthThreshold<-NA
-ltm_cat@seThreshold<-.5 ## This takes much less time than for lengthThrehold.
+## For example, add 'catObj@lengthThreshold==sum(!is.na(nextcat@answers))' to the condition.
+tpm_cat@lengthThreshold<-3
+grm_cat@lengthThreshold<-3
+gpcm_cat@lengthThreshold<-3
 makeTree(ltm_cat,flat=T)
-grm_cat@seThreshold<-.5
-makeTree(grm_cat)
+makeTree(tpm_cat,flat=T)
 makeTree(grm_cat,flat=T)
+makeTree(gpcm_cat,flat=T)
+makeTree(ltm_cat,flat=F)
+makeTree(tpm_cat,flat=F)
+makeTree(grm_cat,flat=F)
+makeTree(gpcm_cat,flat=F)
+
+
 ## Below are comments on the previous version, for comparison and reference.
 
 # makeTree <- function(catObj, flat = FALSE){
