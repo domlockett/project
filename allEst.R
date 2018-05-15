@@ -48,7 +48,7 @@ allEst<-function(respondents, catObjs=list()){
   store<-NULL
     for (i in 1:length(catObjs)){
       #apply theta basic to a set or respondents and return the values for every catObj provided by the user.
-          store<-(cbind(apply(respondents,1,  theta_basic, catObj=catObjs[[i]]),store))
+          store<-(cbind(apply(respondents,1,  thetaBasic, catObj=catObjs[[i]]),store))
     }
   colnames(store)<-  paste("Theta", 1:length(catObjs), sep = " ")
   return(store)
