@@ -16,13 +16,15 @@
 #' @seealso \code{\link{Cat-class}}, \code{\link{probability}}, \code{\link{fisherInfo}}, \code{\link{basic_theta}}
 #' 
 #' @examples 
+#' 
+#' ## Loading ltm Cat object
+#' 
+#' data(ltm_cat)
 #'   
 #'catPlot(ltm_cat,item=8,model="ICC")
-#'catPlot(ltm_cat,item=8,model="IRF")
-#'catPlot(ltm_cat,item=8,model="IIF")
-#'catPlot(grm_cat,item=8,model="ICC")
-#'catPlot(grm_cat,item=8,model="IRF")
-#'catPlot(grm_cat,item=8,model="IIF")
+#'catPlot(ltm_cat,item=2,model="IRF")
+#'catPlot(ltm_cat,item=3,model="IIF")
+
 #' 
 #' @author Haley Acevedo, Ryden Butler, Josh W. Cutler, Matt Malis, Jacob M. Montgomery, Tom Wilkinson, Erin Rossiter, Min Hee Seo, Alex Weil, Jaerin Kim, Dominique Lockett 
 #' 

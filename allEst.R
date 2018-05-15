@@ -17,7 +17,10 @@
 #' @seealso \code{\link{Cat-class}}, \code{\link{apply}}, \code{\link{selectItem}}, \code{\link{basic_theta}}
 #' 
 #' @examples 
-#'   
+#' 
+#'  ## Loading ltm Cat object
+#' data(grm_cat)
+#'    
 #' ## load sample data
 #'  
 #' respondents<-rbind(sample(c(1:4),40,replace=T),sample(c(1:4),40,replace=T),sample(c(1:4),40,replace=T),sample(c(1:4),40,replace=T),sample(c(1:4),40,replace=T))
@@ -29,14 +32,16 @@
 #'  grm_EAP<-grm_cat
 #'  grm_EAP@estimation<-"EAP"
 #' 
-#' grm<-list(grm_MAP, grm_EAP)
 #' 
+#' grm<-list(grm_MAP, grm_EAP)
 #' ## Create a threshold for the estimation
+#' 
+#' ## You must set some sort of CheckStopRule
 #' grm_cat@lengthThreshold<-4
 #' 
 #' ## Run 
 #' 
-#' allEst(resondents, grm)
+#' allEst(respondents, grm)
 #' 
 #' @author Haley Acevedo, Ryden Butler, Josh W. Cutler, Matt Malis, Jacob M. Montgomery, Tom Wilkinson, Erin Rossiter, Min Hee Seo, Alex Weil, Jaerin Kim, Dominique Lockett 
 #' 

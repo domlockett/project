@@ -20,16 +20,24 @@
 #'
 #' @examples 
 #' 
+#' ## Loading ltm Cat object
+#' data(ltm_cat)
+#' 
 #' #test data
 #' answers<-rbind(sample(c(1:4),40,replace=T),sample(c(1:4),40,replace=T))
 #' binary_answers<-sample(c(0:1),40,replace=T)
 #' tpm_answers<-sample(c(0:1),40,replace=T)
 #' 
-#' #test function
-#' theta_basic(ltm_cat, binary_answers)
-#' theta_basic(grm_cat, answers)
-#' theta_basic(gpcm_cat, answers)
-#' theta_basic(tpm_cat, tpm_answers)
+#' 
+#' ## You must be sure to set CheckStopRules
+#' 
+#' ltm_cat@lengthThreshold<-4 # set some thresholds so we have checkStopRules
+#' 
+#' 
+#' 
+#' 
+#' ## test function
+#' thetaBasic(ltm_cat, binary_answers)
 #' 
 #' 
 #' @author Haley Acevedo, Ryden Butler, Josh W. Cutler, Matt Malis, Jacob M. Montgomery, Tom Wilkinson, Erin Rossiter, Min Hee Seo, Alex Weil, Jaerin Kim, Dominique Lockett 
@@ -53,3 +61,4 @@ thetaBasic<- function(catObj, answers=c()){
   #we can verify the estimates by adding answers to our output we would then plug those answers into ltm_cat and check with estimateTheta
   return(theta_est)
 }
+
