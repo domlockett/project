@@ -14,29 +14,37 @@ catPlot(grm_cat,item=8,model="IIF")
 
 ####thetaBasic####
 #sample answers
-answers<-rbind(sample(c(1:4),40,replace=T),sample(c(1:4),40,replace=T))
-binary_answers<-sample(c(0:1),40,replace=T)
-tpm_answers<-sample(c(0:1),40,replace=T)
+ltm_answers<-sample(c(0:1),40,replace=T)
+grm_answers<-sample(c(1:4),20,replace=T)
+gpcm_answers<-sample(c(1:4),10, replace=T)
+tpm_answers<-sample(c(0:1),20,replace=T)
 
 # set some thresholds so we have checkStopRules
-ltm_cat@lengthThreshold<-4 
-grm_cat@lengthThreshold<-4
-gpcm_cat@lengthThreshold<-4
-tpm_cat@lengthThreshold<-4 
+ltm_cat@lengthThreshold<-39
+grm_cat@lengthThreshold<-18
+gpcm_cat@lengthThreshold<-9
+tpm_cat@lengthThreshold<-19
 
 #test function
-thetaBasic(ltm_cat, binary_answers)
-thetaBasic(grm_cat, answers)
-thetaBasic(gpcm_cat, answers)
+thetaBasic(ltm_cat, ltm_answers)
+thetaBasic(grm_cat, grm_answers)
+thetaBasic(gpcm_cat, gpcm_answers)
 thetaBasic(tpm_cat, tpm_answers)
  
  
 ####allEst####
 #sample answers
-respondents<-rbind(sample(c(1:4),40,replace=T),sample(c(1:4),40,replace=T),sample(c(1:4),40,replace=T),sample(c(1:4),40,replace=T),sample(c(1:4),40,replace=T))
-rownames(respondents)<-c("r1","r2","r3","r4","r5") 
+respondents_grm<-rbind(sample(c(1:4),20,replace=T),sample(c(1:4),20,replace=T),sample(c(1:4),20,replace=T),sample(c(1:4),20,replace=T),sample(c(1:4),20,replace=T))
+respondents_gpcm<-rbind(sample(c(1:4),10, replace=T),sample(c(1:4),10, replace=T),sample(c(1:4),10, replace=T),sample(c(1:4),10, replace=T),sample(c(1:4),10, replace=T))
 respondents_ltm<-rbind(sample(0:1,40, replace=T),sample(0:1,40, replace=T),sample(0:1,40, replace=T),sample(0:1,40, replace=T),sample(0:1,40, replace=T))
 respondents_tpm<-rbind(sample(0:1,20, replace=T),sample(0:1,20, replace=T),sample(0:1,20, replace=T),sample(0:1,20, replace=T),sample(0:1,20, replace=T))
+rownames(respondents_grm)<-c("r1","r2","r3","r4","r5") 
+rownames(respondents_gpcm)<-c("r1","r2","r3","r4","r5") 
+rownames(respondents_ltm)<-c("r1","r2","r3","r4","r5") 
+rownames(respondents_tpm)<-c("r1","r2","r3","r4","r5") 
+
+
+
 # multiple catObjects
 grm_MAP<-grm_cat
   grm_MAP@estimation<-"MAP"
