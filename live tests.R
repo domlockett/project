@@ -20,9 +20,9 @@ gpcm_answers<-sample(c(1:4),10, replace=T)
 tpm_answers<-sample(c(0:1),20,replace=T)
 
 # set some thresholds so we have checkStopRules
-ltm_cat@lengthThreshold<-39
+ltm_cat@lengthThreshold<-38
 grm_cat@lengthThreshold<-18
-gpcm_cat@lengthThreshold<-9
+gpcm_cat@lengthThreshold<-4
 tpm_cat@lengthThreshold<-19
 
 #test function
@@ -58,7 +58,7 @@ gpcm_MAP<-gpcm_cat
 gpcm_EAP<-gpcm_cat
   gpcm_EAP@estimation<-"EAP"
 
-gpcm<-list(grm_MAP, grm_EAP)
+gpcm<-list(gpcm_MAP, gpcm_EAP)
 
 ltm_MAP<-ltm_cat
   ltm_MAP@estimation<-"MAP"
@@ -82,9 +82,9 @@ tpm<-list(tpm_MAP, tpm_EAP, tpm_WLE)
 #test
 
 allEst(respondents_ltm,ltm)
-allEst(respondents, grm)
+allEst(respondents_grm, grm)
 allEst(respondents_tpm, tpm)
-allEst(respondents, gpcm)
+allEst(respondents_gpcm, gpcm)
 
 ##makeTree##
 
