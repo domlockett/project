@@ -20,8 +20,8 @@ gpcm_answers<-sample(c(1:4),10, replace=T)
 tpm_answers<-sample(c(0:1),20,replace=T)
 
 # set some thresholds so we have checkStopRules
-ltm_cat@lengthThreshold<-38
-grm_cat@lengthThreshold<-18
+ltm_cat@lengthThreshold<-8
+grm_cat@lengthThreshold<-8
 gpcm_cat@lengthThreshold<-4
 tpm_cat@lengthThreshold<-19
 
@@ -85,10 +85,10 @@ allEst(respondents_ltm,ltm)
 allEst(respondents_grm, grm)
 allEst(respondents_tpm, tpm)
 allEst(respondents_gpcm, gpcm)
-
-##makeTree##
-
+apply(resp[1:3,],1, thetaBasic)
+# #makeTree##
+grm_cat@answers
 ltm_cat@lengthThreshold<-3
 catSurv::makeTree(ltm_cat,flat=T)
 makeTree(ltm_cat,flat=T)
-
+attr(grm_cat)
