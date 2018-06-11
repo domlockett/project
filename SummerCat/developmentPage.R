@@ -106,3 +106,49 @@ grm_WLE<-grm_cat
 grm_WLE@estimation<-"WLE"
 
 grm<-list(grm_MAP, grm_EAP)
+
+
+
+
+allEst<-function(catObjs=list(),resp){
+    
+    #the multiple cat objects must be of the same class and be in list form
+    store<-NULL
+    obj<-NULL
+    for (i in 1:length(catObjs)){
+        obj<-c(obj, catObjs[[i]]@model)
+        if (length(unique(obj))!=1) { #USE THE @MODEL SECTION
+            stop("List of Cat objects must be of the same type*")
+        }
+        if(length(resp) != length(catObjs[[i]]@answers)){
+            stop("Response profile is not compatible with Cat object.")
+        } 
+        #apply theta basic to a set or respondents and return the values for every catObj provided by the user.
+        store<-(rbind(store,apply(resp,1,  function(catObj, answers=c()){
+            if(length(resp) != length(catObj@answers)){
+                stop("Response profile is not compatible with Cat object.")
+            }
+            
+            
+            theta_est <- tryCatch(
+                {
+                    cat<-storeAnswer(catObj,item=selectItem(catObj)$next_item, answers[selectItem(catObj)$next_item])
+                    while (checkStopRules(cat)==F) {
+                        cat<-storeAnswer(cat, item=selectItem(cat)$next_item, answers[selectItem(cat)$next_item])
+                    }
+                    ## no return statement needed
+                    estimateTheta(cat)
+                }, 
+                error = function(cond) {
+                    message(cond)
+                    return(NA)
+                }
+            )
+            return(theta_est)
+        }, catObj=catObjs[[i]])))
+        
+    }
+    # colnames(store)<-  sapply(catObjs, function(x) catObjs@estimation))
+    
+    return(t(store))
+}
