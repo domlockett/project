@@ -142,7 +142,7 @@ allFish<-function(catObjs=list(),theta,resp){
     
   }
   store<-t(store)
-  colnames(store)<- paste("fish", 1:ncol(store))
+  colnames(store)<- paste("catObj", 1:ncol(store))
   return(store)
 }
 allFish(grmList, thetaValue[c(1,23,654,789,323,645)], respProf[c(1,23,654,789,323,645),])
