@@ -3,7 +3,7 @@
 #' Takes in a a \code{Cat} object, a set of respondents, and their corresponding \code{theta} values, to calculate the amount of information which can be extracted given an adaptive battery  
 #'
 #' 
-#' @param catObjs A list of \code{Cat} objects of the same class (using different estimation parameters)
+#' @param catObjs A list of \code{Cat} objects of the same class.
 #' @param theta A vector of numerics representing the true value of theta.
 #' @param resp One or many full response profiles.
 #' 
@@ -12,7 +12,7 @@
 #' These adaptive profiles are then used to calculate the total inforamtion gained for a respondent for all answered
 #' items, conditioned on \code{theta}.
 #' 
-#' @return The function \code{allFish} returns a dataframe  Each \code{Cat} object returns a column and each respondent returns a row.
+#' @return The function \code{allFish} returns a dataframe.  Each \code{Cat} object returns a column and each respondent returns a row.
 #' 
 #' 
 #' 
@@ -25,7 +25,7 @@
 #'    
 #' ## load sample data
 #'  
-#'respondentsapply(thetaValue, 2, simulateRespondents_test, cat=grm_cat, n=10)
+#' respondents<-apply(thetaValue[1:3], 2, simulateRespondents, cat=grm_cat, n=10)
 #' 
 #' #Choose your \code{cat} object and the types of estimation you would like to use
 #'  grm_MAP<-grm_cat
@@ -42,7 +42,7 @@
 #' 
 #' ## Run 
 #' 
-#' allFish(respondents, grmList)
+#' allFish(catObjs=grmList, resp=respondents)
 #' @author Haley Acevedo, Ryden Butler, Josh W. Cutler, Matt Malis, Jacob M. Montgomery, Tom Wilkinson, Erin Rossiter, Min Hee Seo, Alex Weil, Jaerin Kim, Dominique Lockett 
 #' 
 #' @rdname allFish

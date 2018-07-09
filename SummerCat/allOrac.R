@@ -9,7 +9,7 @@
 #'
 #' @details ....
 #'
-#' @return The best theta estimate for each respondent given the number of question set
+#' @return The best theta estimate for each respondent given the 
 #'  
 #' @author Haley Acevedo, Ryden Butler, Josh W. Cutler, Matt Malis, Jacob M. Montgomery, Tom Wilkinson, Erin Rossiter, Min Hee Seo, Alex Weil 
 #' 
@@ -46,11 +46,7 @@
 #' @name allOrac
 NULL
 
-setGeneric("allOrac", function(catObj, thetas, ans_profiles, n) standardGeneric("allOrac"))
-
-#' @rdname allOrac
-#' @export
-setMethod(f = "allOrac", signature = "Cat", definition = function(catObj, thetas, ans_profiles, n){
+allOrac<- function(catObj, thetas, ans_profiles, n){
   orac<-rep(NA, nrow(ans_profiles))
   for (i in 1:nrow(ans_profiles)){
       
@@ -66,11 +62,11 @@ setMethod(f = "allOrac", signature = "Cat", definition = function(catObj, thetas
   }
 
   store<-as.data.frame(orac)
-  colnames(store)<-"theta_est"
+  colnames(store)<-"Theta Estimate"
   
 
   return(store)
-})
+}
 theta<-rep(-4:5,each=100)
 try<-allOrac(grmList[[1]], thetaValue, respProf[1,],4)
 estimateThetas(grmList[[1]], respProf[1,] )

@@ -3,11 +3,11 @@
 #' Takes in a full collection of answers from multiple respondents and multiple cat-objects and returns a set of theta estimates defined by the user
 #'
 #' @param respondents A matrix of respondent answers
-#' @param catObjs Any number of \code{Cat} objects of the same class (using different estimation parameters)
+#' @param catObjs A list of \code{Cat} objects of the same class (using different estimation parameters)
 #'
 #'
 #' @details The function takes a \code{Cat} object and generates an estimation for \code{theta} using \code{MAP}, \code{EAP}, etc. 
-#' The user must concatenate all \code{cat} objects into a single list to be analyzed.
+#' The user must transform all \code{cat} objects into a single list to be analyzed.
 #' 
 #' @return The function \code{allEst} returns a vector.  Each \code{Cat} object returns a column and each respondent returns a row.
 #' 
@@ -23,7 +23,7 @@
 #'    
 #' ## load sample data
 #'  
-#'respondentsapply(thetaValue, 2, simulateRespondents_test, cat=grm_cat, n=10)
+#' respondents<-apply(thetaValue[1:3], 2, simulateRespondents, cat=grm_cat, n=10)
 #' 
 #' #Choose your \code{cat} object and the types of estimation you would like to use
 #'  grm_MAP<-grm_cat
@@ -40,7 +40,7 @@
 #' 
 #' ## Run 
 #' 
-#' allEst(respondents, grmList)
+#' allEst(catObjs=grmList, resp=respondents)
 #' 
 #' @author Haley Acevedo, Ryden Butler, Josh W. Cutler, Matt Malis, Jacob M. Montgomery, Tom Wilkinson, Erin Rossiter, Min Hee Seo, Alex Weil, Jaerin Kim, Dominique Lockett 
 #' 
