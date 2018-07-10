@@ -62,7 +62,7 @@ allOrac<- function(catObj, thetas, ans_profiles, n){
   }
 
   store<-as.data.frame(orac)
-  colnames(store)<-"Theta Estimate"
+  colnames(store)<-" theta_est"
   
 
   return(store)
